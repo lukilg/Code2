@@ -7,25 +7,23 @@ FPIC = -fPIC -c
 O = -o
 C = -c
 
+.PHONY: clean
+.SUFFIXES: .c .o .a .so
+
 PROGS = Code2 kwadratp szescianobj
 
+all: $(PROGS)
 
 Code2: Code2.o kwadratp.a szescianobj.so
 	$(GCC) $(O) $@ $< kwadratp.a ./szescianobj.so
 	
-Code2.o: Code2.c
-	$(GCC) $(C) $<	
+.c.o:
+	$(GCC) $(C) $<
 
-kwadratp.o: kwadratp.c
-	$(GCC) $(FPIC) $^
-
-szescianobj.o: szescianobj.c
-	$(GCC) $(FPIC) $^
-
-kwadratp.a: kwadratp.o
+p%.a: p%.o
 	$(RCS) $@ $<
 
-szescianobj.so: szescianobj.o
+o%.so: o%.o
 	$(GCC) $(SHARED) $@ $<
 	
 clean:
