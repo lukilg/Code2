@@ -1,20 +1,32 @@
+GCC = gcc -g
+RMF = rm -f
+RCS = ar rcs
+
+SHARED = -shared -o
+FPIC = -fPIC -c
+O = -o
+C = -c
+
+PROGS = Code2 kwadratp szescianobj
+
+
 Code2: Code2.o kwadratp.a szescianobj.so
-	gcc -o Code2 Code2.o kwadratp.a ./szescianobj.so
+	$(GCC) $(O) $@ $< kwadratp.a ./szescianobj.so
 	
 Code2.o: Code2.c
-	gcc -c Code2.c
+	$(GCC) $(C) $<	
 
 kwadratp.o: kwadratp.c
-	gcc -c kwadratp.c
+	$(GCC) $(FPIC) $^
 
 szescianobj.o: szescianobj.c
-	gcc -fPIC -c szescianobj.c
+	$(GCC) $(FPIC) $^
 
 kwadratp.a: kwadratp.o
-	ar rcs kwadratp.a kwadratp.o
+	$(RCS) $@ $<
 
 szescianobj.so: szescianobj.o
-	gcc -shared -o szescianobj.so szescianobj.o
+	$(GCC) $(SHARED) $@ $<
 	
 clean:
-	rm Code2 *.o *.a *.so
+	$(RM) $(PROGS) *.o *.a *.out *~ *.so *.gch
